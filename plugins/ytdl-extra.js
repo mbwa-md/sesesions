@@ -33,7 +33,7 @@ cmd({
     }
 
     // Fetch download link from API
-    const { data } = await axios.get(`https://velyn.vercel.app/api/downloader/ytmp4?url=${videoUrl}`);
+    const { data } = await axios.get(`https://api.nekolabs.my.id/downloader/youtube/play/v1?q=${encodeURIComponent(text)}`;
     if (!data.status) return reply("*Failed to fetch video!*");
 
     const ytData = searchData || {
