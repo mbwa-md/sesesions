@@ -1,6 +1,7 @@
 const { cmd } = require('../command');
 const axios = require('axios');
 const yts = require('yt-search');
+const { silainfo, myquoted } = require('../config');
 
 // Fonts function
 const fonts = {
@@ -19,10 +20,9 @@ ${fonts.songFooter()}
     }
 };
 
-// Get config for PREFIX
+// Get PREFIX from config
 const config = require('../config');
 
-// Main command - aliases nyingi
 cmd({
     pattern: "song",
     alias: ["play", "music", "audio", "yt", "youtube", "playvid", "video", "mp3", "mp4", "dl"],
@@ -80,7 +80,9 @@ async (conn, mek, m, { from, args, q, reply, react, sender, pushName }) => {
                     buttonId: `song_videodoc_${video.videoId}`, 
                     buttonText: { displayText: '🎥 Video Doc' } 
                 }
-            ]
+            ],
+            // SILAINFO hapa
+            ...silainfo()
         };
         
         // Store video info temporarily for button responses
@@ -99,7 +101,9 @@ async (conn, mek, m, { from, args, q, reply, react, sender, pushName }) => {
             delete global.songCache[video.videoId];
         }, 5 * 60 * 1000);
         
-        await conn.sendMessage(from, buttonMessage, { quoted: m });
+        await conn.sendMessage(from, buttonMessage, { 
+            quoted: myquoted // MYQUOTED hapa
+        });
         await react("✅");
         
     } catch (error) {
@@ -240,13 +244,13 @@ async (conn, mek, m, { from, body, reply, react, sender }) => {
                     mimetype: 'audio/mpeg',
                     fileName: fileName,
                     caption: `*${videoInfo.title}*\n🎵 Downloaded via SILA MD`
-                });
+                }, { quoted: myquoted });
             } else if (messageType === 'video') {
                 await conn.sendMessage(from, {
                     video: { url: downloadUrl },
                     caption: `*${videoInfo.title}*\n📹 Downloaded via SILA MD`,
                     fileName: fileName
-                });
+                }, { quoted: myquoted });
             } else if (messageType === 'document') {
                 const mimetype = type.includes('audio') ? 'audio/mpeg' : 'video/mp4';
                 await conn.sendMessage(from, {
@@ -254,7 +258,7 @@ async (conn, mek, m, { from, body, reply, react, sender }) => {
                     fileName: fileName,
                     mimetype: mimetype,
                     caption: `*${videoInfo.title}*\n📁 Downloaded as Document via SILA MD`
-                });
+                }, { quoted: myquoted });
             }
             
             await react("✅");
@@ -321,7 +325,8 @@ async (conn, mek, m, { from, args, q, reply, react }) => {
                     buttonId: `song_videodoc_${video.videoId}`, 
                     buttonText: { displayText: '🎥 Video Doc' } 
                 }
-            ]
+            ],
+            ...silainfo()
         };
         
         // Store in cache
@@ -335,63 +340,14 @@ async (conn, mek, m, { from, args, q, reply, react }) => {
             timestamp: Date.now()
         };
         
-        await conn.sendMessage(from, buttonMessage, { quoted: m });
+        await conn.sendMessage(from, buttonMessage, { 
+            quoted: myquoted 
+        });
         await react("✅");
         
     } catch (error) {
         console.error("YTDL command error:", error);
         await react("❌");
         reply("❌ *Invalid URL or download failed!*");
-    }
-});
-
-// Command to show search results with multiple options
-cmd({
-    pattern: "search",
-    alias: ["find", "lookup"],
-    desc: "Search YouTube videos",
-    category: "search",
-    react: "🔍",
-    filename: __filename
-},
-async (conn, mek, m, { from, args, q, reply, react }) => {
-    try {
-        if (!q) {
-            return reply(`❌ *Please provide search query!*\nExample: ${config.PREFIX}search faded`);
-        }
-        
-        await react("🔍");
-        await reply("🔎 *Searching YouTube...*");
-        
-        const search = await yts(q);
-        const videos = search.videos.slice(0, 5);
-        
-        if (!videos.length) {
-            await react("❌");
-            return reply("❌ *No videos found!*");
-        }
-        
-        let resultText = `*📺 YouTube Search Results*\n\n`;
-        
-        videos.forEach((video, index) => {
-            resultText += `${index + 1}. *${video.title}*\n`;
-            resultText += `   ⏱️ ${video.timestamp} | 👁️ ${video.views}\n`;
-            resultText += `   👤 ${video.author.name}\n`;
-            resultText += `   📥 ${config.PREFIX}song ${video.title.substring(0, 30)}\n\n`;
-        });
-        
-        resultText += `\n*Reply with number to download*\nExample: *1* for first result`;
-        
-        await reply(resultText);
-        await react("✅");
-        
-        // Store for number selection
-        global.searchResults = global.searchResults || {};
-        global.searchResults[sender] = videos;
-        
-    } catch (error) {
-        console.error("Search command error:", error);
-        await react("❌");
-        reply("❌ *Search failed!*");
     }
 });
