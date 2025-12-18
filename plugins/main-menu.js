@@ -1,325 +1,241 @@
 const config = require('../config')
 const { cmd, commands } = require('../command');
-const os = require("os")
-const { runtime } = require('../lib/functions')
-const axios = require('axios')
-
-// FakevCard
-const fakevCard = {
-    key: {
-        fromMe: false,
-        participant: "0@s.whatsapp.net",
-        remoteJid: "status@broadcast"
-    },
-    message: {
-        contactMessage: {
-            displayName: "© SILA AI 🎅",
-            vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:SILA AI CHRISTMAS\nORG:SILA AI;\nTEL;type=CELL;type=VOICE;waid=255612491554:+255612491554\nEND:VCARD`
-        }
-    }
-};
+const { silainfo, myquoted } = require('../config');
 
 cmd({
     pattern: "menu",
-    alias: ["allmenu","fullmenu"],
-    use: '.menu',
-    desc: "menu the bot",
-    category: "menu",
-    react: "⚡",
+    alias: ["allmenu","fullmenu","help","cmd"],
+    desc: "Show all bot commands",
+    category: "main",
+    react: "📋",
     filename: __filename
 }, 
-async (conn, mek, m, { from, reply }) => {
+async (conn, mek, m, { from, reply, react, pushName, sender }) => {
     try {
         let dec = `
-╔═══ ✦ *SILA MD — FULL MENU* ✦
-║
-╠══❯ 📥 *DOWNLOAD*
-║ • facebook
-║ • mediafire
-║ • tiktok
-║ • twitter
-║ • insta
-║ • apk
-║ • img
-║ • tt2
-║ • pins
-║ • apk2
-║ • fb2
-║ • pinterest
-║ • spotify
-║ • play
-║ • play2
-║ • play3
-║ • play4
-║ • play5
-║ • play6
-║ • play7
-║ • play8
-║ • play9
-║ • play10
-║ • audio
-║ • video
-║ • video2
-║ • video3
-║ • video4
-║ • video5
-║ • video6
-║ • video7
-║ • video8
-║ • video9
-║ • video10
-║ • ytmp3
-║ • ytmp4
-║ • song
-║ • darama
-║ • gdrive
-║ • ssweb
-║ • tiks
-║
-╠══❯ 👥 *GROUP*
-║ • grouplink
-║ • kickall
-║ • kickall2
-║ • kickall3
-║ • add
-║ • remove
-║ • kick
-║ • promote
-║ • demote
-║ • dismiss
-║ • revoke
-║ • setgoodbye
-║ • setwelcome
-║ • delete
-║ • getpic
-║ • ginfo
-║ • disappear on
-║ • disappear off
-║ • disappear 7D,24H
-║ • allreq
-║ • updategname
-║ • updategdesc
-║ • joinrequests
-║ • senddm
-║ • nikal
-║ • mute
-║ • unmute
-║ • lockgc
-║ • unlockgc
-║ • invite
-║ • tag
-║ • hidetag
-║ • tagall
-║ • tagadmins
-║
-╠══❯ 💬 *REACTIONS*
-║ • bully @tag
-║ • cuddle @tag
-║ • cry @tag
-║ • hug @tag
-║ • awoo @tag
-║ • kiss @tag
-║ • lick @tag
-║ • pat @tag
-║ • smug @tag
-║ • bonk @tag
-║ • yeet @tag
-║ • blush @tag
-║ • smile @tag
-║ • wave @tag
-║ • highfive @tag
-║ • handhold @tag
-║ • nom @tag
-║ • bite @tag
-║ • glomp @tag
-║ • slap @tag
-║ • kill @tag
-║ • happy @tag
-║ • wink @tag
-║ • poke @tag
-║ • dance @tag
-║ • cringe @tag
-║
-╠══❯ 👑 *OWNER*
-║ • owner
-║ • menu
-║ • menu2
-║ • vv
-║ • listcmd
-║ • allmenu
-║ • repo
-║ • block
-║ • unblock
-║ • fullpp
-║ • setpp
-║ • restart
-║ • shutdown
-║ • updatecmd
-║ • alive
-║ • ping
-║ • gjid
-║ • jid
-║
-╠══❯ 🎉 *FUN*
-║ • shapar
-║ • rate
-║ • insult
-║ • hack
-║ • ship
-║ • character
-║ • pickup
-║ • joke
-║ • hrt
-║ • hpy
-║ • syd
-║ • anger
-║ • shy
-║ • kiss
-║ • mon
-║ • cunfuzed
-║ • setpp
-║ • hand
-║ • nikal
-║ • hold
-║ • hug
-║ • nikal
-║ • hifi
-║ • poke
-║
-╠══❯ 🔄 *CONVERT*
-║ • sticker
-║ • sticker2
-║ • emojimix
-║ • fancy
-║ • take
-║ • tomp3
-║ • tts
-║ • trt
-║ • base64
-║ • unbase64
-║ • binary
-║ • dbinary
-║ • tinyurl
-║ • urldecode
-║ • urlencode
-║ • url
-║ • repeat
-║ • ask
-║ • readmore
-║
-╠══❯ 🤖 *AI*
-║ • ai
-║ • gpt3
-║ • gpt2
-║ • gptmini
-║ • gpt
-║ • meta
-║ • blackbox
-║ • luma
-║ • dj
-║ • khan
-║ • jawad
-║ • gpt4
-║ • bing
-║ • imagine
-║ • imagine2
-║ • copilot
-║
-╠══❯ 🏠 *MAIN*
-║ • ping
-║ • ping2
-║ • speed
-║ • live
-║ • alive
-║ • runtime
-║ • uptime
-║ • repo
-║ • owner
-║ • menu
-║ • menu2
-║ • restart
-║
-╠══❯ 🎭 *ANIME*
-║ • fack
-║ • truth
-║ • dare
-║ • dog
-║ • awoo
-║ • garl
-║ • waifu
-║ • neko
-║ • megnumin
-║ • maid
-║ • loli
-║ • animegirl
-║ • animegirl1
-║ • animegirl2
-║ • animegirl3
-║ • animegirl4
-║ • animegirl5
-║ • anime1
-║ • anime2
-║ • anime3
-║ • anime4
-║ • anime5
-║ • animenews
-║ • foxgirl
-║ • naruto
-║
-╠══❯ 📌 *OTHER*
-║ • timenow
-║ • date
-║ • count
-║ • calculate
-║ • countx
-║ • flip
-║ • coinflip
-║ • rcolor
-║ • roll
-║ • fact
-║ • cpp
-║ • rw
-║ • pair
-║ • pair2
-║ • pair3
-║ • fancy
-║ • logo <text>
-║ • define
-║ • news
-║ • movie
-║ • weather
-║ • srepo
-║ • insult
-║ • save
-║ • wikipedia
-║ • gpass
-║ • githubstalk
-║ • yts
-║ • ytv
-╰──────────────┈⊷
-> ${config.DESCRIPTION}`
+╭▸─────────────────▸╮
+│    「 𝐒𝐈𝐋𝐀 𝐌𝐃 𝐌𝐄𝐍𝐔 」    │
+╰▸─────────────────▸╯
 
+╔► 𝐃𝐎𝐖𝐍𝐋𝐎𝐀𝐃𝐒
+╚► → song
+╚► → play
+╚► → ytmp3
+╚► → ytmp4
+╚► → video
+╚► → audio
+╚► → tiktok
+╚► → fb
+╚► → ig
+╚► → twitter
+╚► → spotify
+╚► → pinterest
+╚► → apk
+╚► → mediafire
+╚► → gdrive
+
+╔► 𝐆𝐑𝐎𝐔𝐏
+╚► → add
+╚► → kick
+╚► → promote
+╚► → demote
+╚► → ginfo
+╚► → grouplink
+╚► → tagall
+╚► → tagadmins
+╚► → hidetag
+╚► → invite
+╚► → setwelcome
+╚► → goodbye
+╚► → lockgc
+╚► → unlockgc
+╚► → mute
+╚► → unmute
+
+╔► 𝐎𝐖𝐍𝐄𝐑
+╚► → block
+╚► → unblock
+╚► → restart
+╚► → shutdown
+╚► → setpp
+╚► → broadcast
+╚► → eval
+╚► → exec
+
+╔► 𝐅𝐔𝐍 & 𝐆𝐀𝐌𝐄𝐒
+╚► → sticker
+╚► → emojimix
+╚► → rate
+╚► → ship
+╚► → joke
+╚► → truth
+╚► → dare
+╚► → fact
+╚► → character
+╚► → pickup
+
+╔► 𝐀𝐈 & 𝐓𝐎𝐎𝐋𝐒
+╚► → ai
+╚► → gpt
+╚► → gpt4
+╚► → bing
+╚► → imagine
+╚► → trt
+╚► → tts
+╚► → fancy
+╚► → base64
+╚► → binary
+
+╔► 𝐈𝐍𝐅𝐎
+╚► → alive
+╚► → ping
+╚► → speed
+╚► → runtime
+╚► → owner
+╚► → repo
+╚► → menu
+
+╔► 𝐎𝐓𝐇𝐄𝐑𝐒
+╚► → anime
+╚► → waifu
+╚► → logo
+╚► → weather
+╚► → news
+╚► → wikipedia
+╚► → githubstalk
+
+╭▸─────────────────▸╮
+│    — 𝐒𝐈𝐋𝐀 𝐓𝐄𝐂𝐇 —    │
+╰▸─────────────────▸╯
+
+*Total Commands:* ${commands.length}
+*User:* ${pushName || sender.split('@')[0]}
+
+╔═❯ ${config.DESCRIPTION}`;
+
+        const buttonMessage = {
+            text: dec,
+            footer: "📱 Click buttons below for more",
+            buttons: [
+                { 
+                    buttonId: "owner_info", 
+                    buttonText: { displayText: '👑 Owner Info' } 
+                },
+                { 
+                    buttonId: "cmd_list", 
+                    buttonText: { displayText: '📜 All Commands' } 
+                }
+            ],
+            ...silainfo()
+        };
+        
         await conn.sendMessage(
             from,
-            {
-                image: { url: `https://files.catbox.moe/jwmx1j.jpg` },
-                caption: dec,
-                contextInfo: {
-                    mentionedJid: [m.sender],
-                    forwardingScore: 999,
-                    isForwarded: true,
-                    forwardedNewsletterMessageInfo: {
-                        newsletterJid: '120363402325089913@newsletter',
-                        newsletterName: 'SILA MD',
-                        serverMessageId: 143
-                    }
-                }
-            },
-            { quoted: fakevCard }
+            buttonMessage,
+            { quoted: myquoted }
         );
+        
+        await react("✅");
 
     } catch (e) {
         console.log(e);
-        reply(`${e}`);
+        reply(`Error: ${e.message}`);
+    }
+});
+
+// Handle button responses
+cmd({
+    on: "click",
+    fromMe: false,
+    dontAddCommandList: true
+},
+async (conn, mek, m, { from, body, reply, react, sender }) => {
+    try {
+        if (body === "owner_info") {
+            await react("👑");
+            
+            // Owner vcard info
+            const ownerInfo = `╭▸─────────────────▸╮
+│    「 𝐎𝐖𝐍𝐄𝐑 𝐈𝐍𝐅𝐎 」    │
+╰▸─────────────────▸╯
+
+╔► 𝐍𝐚𝐦𝐞
+╚► → SILA AI
+
+╔► 𝐍𝐮𝐦𝐛𝐞𝐫
+╚► → +${config.OWNER_NUMBER}
+
+╔► 𝐁𝐨𝐭 𝐍𝐚𝐦𝐞
+╚► → ${config.BOT_NAME}
+
+╔► 𝐏𝐫𝐞𝐟𝐢𝐱
+╚► → ${config.PREFIX}
+
+╔► 𝐕𝐞𝐫𝐬𝐢𝐨𝐧
+╚► → S1
+
+╭▸─────────────────▸╮
+│ — 𝐒𝐈𝐋𝐀 𝐓𝐄𝐂𝐇 — │
+╰▸─────────────────▸╯
+
+*Contact owner for support*`;
+            
+            // Create vcard
+            const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:${config.OWNER_NAME}
+N:;${config.OWNER_NAME};;;
+TEL;type=CELL;type=VOICE;waid=${config.OWNER_NUMBER}:+${config.OWNER_NUMBER}
+ORG:SILA TECH;
+TITLE:Bot Owner
+NOTE:Contact for bot support
+URL:https://wa.me/${config.OWNER_NUMBER}
+END:VCARD`;
+            
+            await conn.sendMessage(from, {
+                contacts: {
+                    displayName: config.OWNER_NAME,
+                    contacts: [{
+                        vcard: vcard
+                    }]
+                },
+                caption: ownerInfo
+            }, { quoted: myquoted });
+            
+        } else if (body === "cmd_list") {
+            await react("📜");
+            
+            // Group commands by category
+            const categories = {};
+            commands.forEach(cmd => {
+                if (!categories[cmd.category]) {
+                    categories[cmd.category] = [];
+                }
+                categories[cmd.category].push(cmd.pattern);
+            });
+            
+            let cmdList = `╭▸─────────────────▸╮
+│    「 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒 𝐋𝐈𝐒𝐓 」    │
+╰▸─────────────────▸╯\n\n`;
+            
+            for (const [category, cmds] of Object.entries(categories)) {
+                cmdList += `╔► ${category.toUpperCase()}\n`;
+                cmds.forEach(cmd => {
+                    cmdList += `╚► → ${config.PREFIX}${cmd}\n`;
+                });
+                cmdList += '\n';
+            }
+            
+            cmdList += `╭▸─────────────────▸╮
+│ — 𝐓𝐨𝐭𝐚𝐥: ${commands.length} 𝐂𝐦𝐝𝐬 — │
+╰▸─────────────────▸╯`;
+            
+            await reply(cmdList);
+        }
+        
+    } catch (error) {
+        console.error("Button handler error:", error);
+        await react("❌");
+        reply("❌ *Action failed!*");
     }
 });
