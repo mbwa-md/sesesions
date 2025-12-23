@@ -4,8 +4,8 @@ const { silainfo, myquoted } = require('../config');
 
 //=========== MENU2 COMMAND ===========//
 cmd({
-    pattern: "menu2",
-    alias: ["help2", "commands2", "list2"],
+    pattern: "menu3",
+    alias: ["help3", "commands3", "list3"],
     desc: "Show enhanced command list",
     category: "main",
     react: "📜",
