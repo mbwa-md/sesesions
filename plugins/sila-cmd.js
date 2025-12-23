@@ -423,8 +423,8 @@ try{
 
 // QUICK MENU COMMAND
 cmd({
-    pattern: "quickmenu",
-    alais: ["qmenu", "fastmenu", "minimenu"],
+    pattern: "silamenu",
+    alais: ["smenu", "fastmenu", "minimenu"],
     react: "⚡",
     desc: "Quick commands menu",
     category: "general",
