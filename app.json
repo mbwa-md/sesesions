@@ -36,7 +36,7 @@
     "ALWAYS_ONLINE": {
       "description": "Make it true if want always online.",
       "required": false,
-      "value": "false"  
+      "value": "true"  
     },    
   
     "AUTO_VOICE": {
@@ -79,7 +79,7 @@
     "AUTO_STATUS_MSG": {
       "description": "Type custom message on status reply",
       "required": true,
-      "value": "*HELLO🖤*"
+      "value": "*JUST FOLLOW MAIN==https://whatsapp.com/channel/0029VbBG4gfISTkCpKxyMH02 > https://chat.whatsapp.com/IdGNaKt80DEBqirc2ek4ks*"
    
      }, 
     
