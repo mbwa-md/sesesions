@@ -17,7 +17,7 @@ const config = {
     CUSTOM_REACT: process.env.CUSTOM_REACT || "false",
     CUSTOM_REACT_EMOJIS: process.env.CUSTOM_REACT_EMOJIS || "💝,💖,💗,❤️‍🩹,❤️,🧡,💛,💚,💙,💜,🤎,🖤,🤍",
     DELETE_LINKS: process.env.DELETE_LINKS || "false",
-    OWNER_NUMBER: process.env.OWNER_NUMBER || "255710017197",
+    OWNER_NUMBER: process.env.OWNER_NUMBER || "255789661031",
     OWNER_NAME: process.env.OWNER_NAME || "SILA WHISPER",
     DESCRIPTION: process.env.DESCRIPTION || "*© 𝐏𝐎𝐖𝐄𝐃 𝐁𝐘 𝐒𝐈𝐋𝐀 𝐓𝐄𝐂𝐇*",
     ALIVE_IMG: process.env.ALIVE_IMG || "https://files.catbox.moe/277zt9.jpg",
@@ -34,7 +34,7 @@ const config = {
     PUBLIC_MODE: process.env.PUBLIC_MODE || "true",
     AUTO_TYPING: process.env.AUTO_TYPING || "true",
     READ_CMD: process.env.READ_CMD || "false",
-    DEV: process.env.DEV || "255710017197",
+    DEV: process.env.DEV || "255789661031",
     ANTI_VV: process.env.ANTI_VV || "true",
     ANTI_DEL_PATH: process.env.ANTI_DEL_PATH || "inbox",
     AUTO_RECORDING: process.env.AUTO_RECORDING || "false",
@@ -76,32 +76,23 @@ const silainfo = () => {
     };
 };
 
-// MYQUOTED object (not attached to config)
-const myquoted = {
+// MYQUOTED object replaced with fakevCard
+const fakevCard = {
     key: {
-        remoteJid: 'status@broadcast',
-        participant: '13135550002@s.whatsapp.net',
         fromMe: false,
-        id: Math.random().toString(36).substring(2, 10).toUpperCase()
+        participant: "0@s.whatsapp.net",
+        remoteJid: "status@broadcast"
     },
     message: {
         contactMessage: {
             displayName: "© SILA MD",
-            vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:SILA MD\nORG: SILA MD;\nTEL;type=CELL;type=VOICE;waid=13135550002:13135550002\nEND:VCARD`,
-            contextInfo: {
-                stanzaId: Math.random().toString(36).substring(2, 10).toUpperCase(),
-                participant: "0@s.whatsapp.net",
-                quotedMessage: { conversation: "© Sila Tech" }
-            }
+            vcard: `BEGIN:VCARD\nVERSION:3.0\nFN:SILA-MD\nORG:SILA TECH;\nTEL;type=CELL;type=VOICE;waid=255612491554:+255612491554\nEND:VCARD`
         }
-    },
-    messageTimestamp: Math.floor(Date.now() / 1000),
-    status: 1,
-    verifiedBizName: "Meta"
+    }
 };
 
 module.exports = config;
 
-// Export silainfo and myquoted separately
+// Export silainfo and fakevCard separately
 module.exports.silainfo = silainfo;
-module.exports.myquoted = myquoted;
+module.exports.fakevCard = fakevCard;
