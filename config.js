@@ -6,7 +6,7 @@ function convertToBool(text, fault = 'true') {
 }
 
 const config = {
-    SESSION_ID: process.env.SESSION_ID || "POPKID;;;vVF21AJJ#OpLZH0XKpKZxtTs6txGzYXzhTEo_OPFQ2bkriP5kcOI",
+    SESSION_ID: process.env.SESSION_ID || "POPKID;;;fEFjEKzZ#FxcwFHsguBK-mbJSA4CAm6lS0Xrd8pN-IL3Qtq1DvIg",
     AUTO_STATUS_SEEN: process.env.AUTO_STATUS_SEEN || "true",
     AUTO_STATUS_REPLY: process.env.AUTO_STATUS_REPLY || "false",
     AUTO_STATUS_REACT: process.env.AUTO_STATUS_REACT || "true",
